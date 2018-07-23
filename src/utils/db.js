@@ -1,13 +1,17 @@
-// import knexJs from 'knex';
-// import knexConfig from './knexfile';
-// import bookshelfJs from 'bookshelf';
+import logger from './logger';
+import mongoose from 'mongoose';
 
-// /**
-//  * Database connection.
-//  */
-// const knex = knexJs(knexConfig);
-// const bookshelf = bookshelfJs(knex);
+mongoose.Promise = global.Promise;
 
-// bookshelf.plugin(['virtuals', 'pagination', 'visibility', 'bookshelf-camelcase']);
+const db = async () => {
+  try {
+    await mongoose.connect(
+      process.env.config.MONGO_HOST,
+      { useMongoClient: true }
+    );
+  } catch (err) {
+    logger.info(err);
+  }
+};
 
-// export default bookshelf;
+export default db;
