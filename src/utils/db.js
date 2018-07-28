@@ -2,16 +2,16 @@ import logger from './logger';
 import mongoose from 'mongoose';
 
 mongoose.Promise = global.Promise;
-
-const db = async () => {
-  try {
-    await mongoose.connect(
-      process.env.config.MONGO_HOST,
-      { useMongoClient: true }
-    );
-  } catch (err) {
-    logger.info(err);
+mongoose.connect(
+  process.env.MONGO_DB,
+  { useNewUrlParser: true },
+  err => {
+    if (err) {
+      logger.info('Unable to connect to database.');
+      process.exit(1);
+    }
+    logger.info('Connected to database.');
   }
-};
+);
 
-export default db;
+export default mongoose;
